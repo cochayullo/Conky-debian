@@ -1,0 +1,109 @@
+conky.config = {
+  alignment = 'top_right',
+  background = false,
+  border_width = 0.5,
+  cpu_avg_samples = 12,
+  default_color = 'black',
+  default_outline_color = 'grey',
+  default_shade_color = 'white',
+  draw_borders = true,
+  draw_graph_borders = true,
+  draw_outline = true,
+  draw_shades = false,
+  use_xft = true,
+  font = 'Open Sans:size=10',
+  gap_x = 5,
+  gap_y = 0,
+  maximum_width = 325,
+  minimum_height = 10,
+  minimum_width = 10,
+  net_avg_samples = 2,
+  double_buffer = true,
+  out_to_console = false,
+  out_to_stderr = false,
+  extra_newline = false,
+  own_window = true,
+  own_window_colour = '2A0A0A',
+  own_window_class = 'dock',
+  own_window_argb_visual = true,
+  own_window_type = conky,
+  own_window_transparent = true,
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+  stippled_borders = 0,
+  update_interval = 1,
+  uppercase = true,
+  use_spacer = 'none',
+  show_graph_scale = false,
+  show_graph_range = false
+}
+
+conky.text = [[
+
+  $color${font}${font Open Sans:size=44}$alignr${time %H:%M}$font$color${font Open Sans:size=15}
+  ${font Open Sans:Bold:size=9}
+  $alignr${time %a}, ${time %d %b %Y}$font$color
+  # 
+  ${font Open Sans:Bold:size=16}${color 4C7523} Athan
+  # SYS
+  ${font Open Sans:Bold:size=10}${color 4C7523}SYSTEM ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=10}
+  Kernel $alignr $kernel
+  Uptime $alignr $uptime
+
+  # Procesador
+  ${font Open Sans:Bold:size=10}${color 4C7523}INTEL ${execi 1000 lscpu | grep "Nombre del modelo:" | cut -c 55-63}${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=9}
+  Usage $alignr $cpu %
+  Temperature $alignr ${acpitemp}°C
+
+  # VIDEO
+  ${font Open Sans:Bold:size=10}${color 4C7523}${execi 1000 lspci|grep "GTX"| cut -c 51-76} ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=9}
+  Frequency $alignr ${nvidia gpufreq} Mhz
+  Memory $alignr ${nvidia memfreq} Mhz
+  Temperature $alignr ${nvidia temp}°C
+
+  # RAM
+  ${font Open Sans:Bold:size=10}${color 4C7523}RAM ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=9}
+  Total $alignr $memmax
+  In use $alignr $mem
+  Free $alignr $memeasyfree
+  Buffers $alignr $buffers
+  Cache $alignr $cached
+  
+	# SSD
+	${font Open Sans:Bold:size=10}${color 4C7523}SSD ${hr 2}$color${font}${offset 1}
+	${offset 4}${font Open Sans:Bold:size=9}${color 000000}home (${fs_type /home}) $color${fs_bar 4 /home/}
+	${offset 4}Total: ${fs_size /home/}
+	${offset 4}Free: ${fs_free /home/}
+	${offset 4}Used: ${fs_used /home/}
+	
+	#Networking  
+	#comentar interfaces de red que no tienen intaladas
+	${font Open Sans:Bold:size=9}${color 4C7523}EHERNET ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=10}
+	${color 000000}LAN${color 000000} ${alignr}${color 000000}IP: ${addr enp63s0}
+	${color 000000}Download: ${color 000000}${downspeed enp63s0} k/s ${alignr} $alignr${color 000000}Upload: ${color 000000} ${upspeed enp63s0} k/s
+	${color 000000}${downspeedgraph enp63s0 8,150} ${alignr}${color 000000}${upspeedgraph enp63s0 8,150}
+	${color 000000}Total:${color 000000}${totaldown enp63s0} ${alignr}${color 000000}Total:${color 000000}${totalup enp63s0}
+	
+	#interfaces tunel
+	${font Open Sans:Bold:size=10}${color 4C7523}TUNEL IP ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=9}
+  ${color 000000}Tunel IP${color} ${alignr}${color 000000}IP: ${addr tun0}
+	${color 000000}Download: ${color 000000}${downspeed tun0} k/s ${alignr} $alignr${color 000000}Upload: ${color 000000} ${upspeed tun0} k/s
+	${color 000000}${downspeedgraph tun0 8,150} ${alignr}${color 000000}${upspeedgraph tun0 8,150}
+	${color 000000}Total:${color 000000}${totaldown tun0} ${alignr}${color 000000}Total:${color 000000}${totalup tun0}
+
+	#wifi
+	${font Open Sans:Bold:size=10}${color 4C7523}WIFI ${hr 2}$color${font}${offset 1}
+  ${font Open Sans:Bold:size=9}
+	${color 000000}Wifi${alignr}${color 000000}IP: ${addr wlp64s0}
+	${color 000000}ESSID:${color 000000}${wireless_essid wlan0} ${color 000000}Rate:${color 000000}${wireless_bitrate wlp64s0}${alignr}
+  ${color 000000}Quality:${color 000000}${wireless_link_qual_perc wlp64s0}%${color}${wireless_link_bar 8,75 wlp64s0}
+	${color 000000}Download: ${color 000000}${downspeed wlp64s0}KB/s ${color 000000} $alignr${color 000000}Upload: ${alignr}${color 000000}${upspeed wlp64s0}KB/s
+	${color 000000}${downspeedgraph wlp64s0 8,150} ${alignr}${color 000000}${upspeedgraph wlan0 8,150}
+	${color 000000}Total:${color 000000}${totaldown wlp64s0} ${alignr}${color 000000}Total:${color 000000}${totalup wlp64s0}  
+  
+]]
